@@ -323,7 +323,8 @@ PRODUCT_PACKAGES += \
     init.qcom.usb.rc \
     init.qti.fm.sh \
     init.target.rc \
-    ueventd.qcom.rc
+    ueventd.qcom.rc \
+    init.safailnet.rc
 
 # RenderScript HAL
 PRODUCT_PACKAGES += \
