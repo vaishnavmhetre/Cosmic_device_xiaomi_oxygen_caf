@@ -175,7 +175,7 @@ set_speaker_light_locked(struct light_device_t* dev,
             break;
     }
 
-    ALOGD("set_speaker_light_locked mode %d, onMS=%d, offMS=%d\n",
+    ALOGV("set_speaker_light_locked mode %d, onMS=%d, offMS=%d\n",
             state->flashMode, onMS, offMS);
 
     blink = onMS > 0 && offMS > 0;
