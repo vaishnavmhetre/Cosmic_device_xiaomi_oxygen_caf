@@ -183,8 +183,7 @@ PRODUCT_PACKAGES += \
 
 # Fingerprint
 PRODUCT_PACKAGES += \
-    fingerprintd \
-    fingerprint.msm8953
+    android.hardware.biometrics.fingerprint@2.0-service.xiaomi_oxygen
 
 # FM
 PRODUCT_PACKAGES += \
