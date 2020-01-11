@@ -180,6 +180,7 @@ TARGET_PER_MGR_ENABLED := true
 TARGET_HAS_NO_WLAN_STATS := true
 TARGET_TAP_TO_WAKE_NODE := "/proc/touchpanel/enable_dt2w"
 TARGET_USES_INTERACTION_BOOST := true
+TARET_USES_NON_LEGACY_POWERHAL := true
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/fstab.recovery.qcom
