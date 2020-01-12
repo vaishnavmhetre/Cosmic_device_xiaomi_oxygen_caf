@@ -172,9 +172,6 @@ on boot
     # Create hvdcp_opti directory
     mkdir /mnt/vendor/persist/hvdcp_opti 0770 root system
 
-    # Legacy ril-daemon is now disabled by default
-    enable ril-daemon
-
 # msm specific files that need to be created on /data
 on post-fs-data
     mkdir /data/vendor/misc 01771 system system
@@ -460,3 +457,9 @@ service vendor.power_off_alarm /vendor/bin/power_off_alarm
     group system
     disabled
     oneshot
+
+service vendor.ril-daemon /vendor/bin/hw/rild
+    class main
+    user radio
+    group radio cache inet misc audio sdcard_r sdcard_rw diag log
+    capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
