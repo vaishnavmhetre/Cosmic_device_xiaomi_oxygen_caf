@@ -15,11 +15,11 @@
 #
 
 $(call inherit-product, vendor/xiaomi/oxygen/oxygen-vendor.mk)
-$(call inherit-product, vendor/xiaomi/msm8953-common/msm8953-common-vendor.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_m.mk)
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
+DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay-lineage
 
 # Screen density
 PRODUCT_AAPT_CONFIG := normal
@@ -30,7 +30,6 @@ PRODUCT_USES_QCOM_HARDWARE := true
 PRODUCT_BOARD_PLATFORM := msm8953
 
 # Boot animation
-TARGET_BOOT_ANIMATION_RES := 1080
 TARGET_SCREEN_HEIGHT := 1920
 TARGET_SCREEN_WIDTH := 1080
 
@@ -87,7 +86,7 @@ PRODUCT_PACKAGES += \
     android.hardware.audio@5.0-impl \
     android.hardware.audio@2.0-service \
     android.hardware.audio.effect@5.0-impl \
-    android.hardware.soundtrigger@2.2-impl \
+    android.hardware.soundtrigger@2.1-impl \
     audio.primary.msm8953 \
     audio.r_submix.default \
     audio.usb.default \
@@ -95,7 +94,8 @@ PRODUCT_PACKAGES += \
     libaudio-resampler \
     libqcomvisualizer \
     libqcomvoiceprocessing \
-    libqcompostprocbundle 
+    libqcompostprocbundle \
+    tinymix
 
 # A2DP
 PRODUCT_PACKAGES += \
@@ -127,24 +127,13 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
     android.hardware.camera.provider@2.4-service \
-    camera.device@3.2-impl \
-    libmm-qcamera \
     camera.msm8953 \
-    Snap \
-    vendor.qti.hardware.camera.device@1.0 \
-    vendor.qti.hardware.camera.device@1.0_vendor
-
-# Camera
-PRODUCT_PACKAGES += \
-    libshim_camera
+    libmm-qcamera \
+    Snap
 
 # Consumerir
 PRODUCT_PACKAGES += \
     android.hardware.ir@1.0-service.xiaomi_oxygen
-
-# Dex
-PRODUCT_DEXPREOPT_SPEED_APPS += \
-    SystemUI
 
 # Display
 PRODUCT_PACKAGES += \
@@ -196,13 +185,6 @@ PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-impl \
     android.hardware.gatekeeper@1.0-service
 
-# Google Lens
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/pixelstyle/etc/sysconfig/pixel_2017_exclusive.xml:system/etc/sysconfig/pixel_2017_exclusive.xml \
-    $(LOCAL_PATH)/pixelstyle/etc/sysconfig/pixel_2017.xml:system/etc/sysconfig/pixel_2017.xml \
-    $(LOCAL_PATH)/pixelstyle/etc/sysconfig/nexus.xml:system/etc/sysconfig/nexus.xml \
-    $(LOCAL_PATH)/pixelstyle/etc/sysconfig/google_build.xml:system/etc/sysconfig/google_build.xml
-
 # GPS
 PRODUCT_PACKAGES += \
     android.hardware.gnss@1.0-impl-qti \
@@ -227,15 +209,24 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hidl.base@1.0
 
-# HW crypto
-PRODUCT_PACKAGES += \
-    vendor.qti.hardware.cryptfshw@1.0-service-qti.qsee
-
 # IMS
 PRODUCT_PACKAGES += \
     ims-ext-common
 
-# Input
+# IPA Manager
+PRODUCT_PACKAGES += \
+    ipacm \
+    IPACM_cfg.xml
+
+# IRQ
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
+
+# IRSC
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/sec_config:$(TARGET_COPY_OUT_VENDOR)/etc/sec_config
+
+# Keylayout
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/ft5435_ts.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/ft5435_ts.kl \
     $(LOCAL_PATH)/keylayout/gf3208.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/gf3208.kl \
@@ -250,19 +241,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/synaptics_dsxv26.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/synaptics_dsxv26.kl \
     $(LOCAL_PATH)/keylayout/synaptics_rmi4_i2c.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/synaptics_rmi4_i2c.kl \
     $(LOCAL_PATH)/keylayout/uinput-goodix.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/uinput-goodix.kl
-
-# IPA Manager
-PRODUCT_PACKAGES += \
-    ipacm \
-    IPACM_cfg.xml
-
-# IRQ
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
-
-# IRSC
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/sec_config:$(TARGET_COPY_OUT_VENDOR)/etc/sec_config
 
 # Keymaster HAL
 PRODUCT_PACKAGES += \
@@ -327,15 +305,12 @@ PRODUCT_PACKAGES += \
     fstab.qcom \
     init.qcom.early_boot.sh \
     init.qcom.post_boot.sh \
-    init.oxygen.rc \
-    init.goodix.sh \
     init.qcom.rc \
     init.qcom.sh \
     init.qcom.usb.rc \
     init.qti.fm.sh \
     init.target.rc \
-    ueventd.qcom.rc \
-    init.safailnet.rc
+    ueventd.qcom.rc
 
 # RenderScript HAL
 PRODUCT_PACKAGES += \
@@ -343,7 +318,7 @@ PRODUCT_PACKAGES += \
 
 # RIL
 PRODUCT_PACKAGES += \
-    android.hardware.radio@1.2 \
+    android.hardware.radio@1.0 \
     android.hardware.radio.config@1.0 \
     android.hardware.secure_element@1.0 \
     librmnetctl \
@@ -401,14 +376,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vndk-sp
 
-# Vndk-hack
-PRODUCT_COPY_FILES += \
-    prebuilts/vndk/v27/arm64/arch-arm64-armv8-a/shared/vndk-core/android.hardware.gnss@1.0.so:system/lib64/android.hardware.gnss@1.0-v27.so
-
-# Wallpapers
-PRODUCT_PACKAGES += \
-    PixelLiveWallpaperPrebuilt
-
 # Whitelisted apps
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/privapp-permissions-qti.xml:system/etc/permissions/privapp-permissions-qti.xml \
@@ -430,5 +397,5 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/firmware/wlan/prima/WCNSS_qcom_cfg.ini
 
 # Wi-Fi Display
-#PRODUCT_BOOT_JARS += \
-#    WfdCommon
+PRODUCT_BOOT_JARS += \
+    WfdCommon

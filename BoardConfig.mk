@@ -76,7 +76,6 @@ BOARD_SUPPORTS_SOUND_TRIGGER := true
 BOARD_USES_ALSA_AUDIO := true
 #USE_CUSTOM_AUDIO_POLICY := 1
 USE_XML_AUDIO_POLICY_CONF := 1
-TARGET_USES_AOSP_FOR_AUDIO := true
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := MSM8953
@@ -89,6 +88,7 @@ BOARD_HAVE_BLUETOOTH_QCOM := true
 # Camera
 BOARD_QTI_CAMERA_32BIT_ONLY := true
 TARGET_TS_MAKEUP := true
+TARGET_USES_QTI_CAMERA_DEVICE := true
 USE_DEVICE_SPECIFIC_CAMERA := true
 
 # Charger
@@ -184,24 +184,21 @@ TARGET_USES_INTERACTION_BOOST := true
 TARET_USES_NON_LEGACY_POWERHAL := true
 
 # Recovery
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/fstab.recovery.qcom
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.recovery.qcom
 
 # RIL
+DISABLE_RILD_OEM_HOOK := true
 TARGET_PROVIDES_QTI_TELEPHONY_JAR := true
-ENABLE_VENDOR_RIL_SERVICE := true
+TARGET_USES_OLD_MNC_FORMAT := true
 
 # Security patch level
-VENDOR_SECURITY_PATCH := 2019-05-05
+VENDOR_SECURITY_PATCH := 2019-04-01
 
 # SELinux
 include device/qcom/sepolicy-legacy-um/sepolicy.mk
 BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
 BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
 SELINUX_IGNORE_NEVERALLOWS := true
-
-# Shims
-TARGET_LD_SHIM_LIBS += \
-    /system/vendor/lib/libmmcamera_ppeiscore.so|libshim_camera.so
 
 # Treble
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
@@ -222,4 +219,3 @@ WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # Inherit from the proprietary version
 -include vendor/xiaomi/oxygen/BoardConfigVendor.mk
--include vendor/xiaomi/msm8953-common/BoardConfigVendor.mk
